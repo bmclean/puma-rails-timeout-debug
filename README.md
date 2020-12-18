@@ -36,6 +36,8 @@ As expected, this times out:
 
     Rack::Timeout::RequestTimeoutException (Request waited 15ms, then ran for longer than 1000ms )
 
+    env[Rack::Timeout::ENV_INFO_KEY].state == :timed_out
+
 ##### Wait timeout example:
 
     EXAMPLE_SLEEP_TIME=3 RACK_TIMEOUT_SERVICE_TIMEOUT=15 RACK_TIMEOUT_WAIT_TIMEOUT=1 RACK_TIMEOUT_WAIT_OVERTIME=1 rails s
@@ -49,6 +51,8 @@ As expected, this times out:
     Internal Server Error
 
     Rack::Timeout::RequestTimeoutException (Request waited 21ms, then ran for longer than 1979ms )
+
+    env[Rack::Timeout::ENV_INFO_KEY].state == :timed_out
 
 ##### Wait timeout with link conditioner examples:
 
@@ -75,15 +79,17 @@ This request (using the 3gslow throttle) exceeds 8 seconds, so we see:
 
     #<Rack::Timeout::RequestExpiryError: Request older than 8000ms.>
 
-Setting RACK_TIMEOUT_WAIT_OVERTIME=20 allows the payload to be fully received:
+    env[Rack::Timeout::ENV_INFO_KEY].state == :expired
 
-    RACK_TIMEOUT_SERVICE_TIMEOUT=1 RACK_TIMEOUT_WAIT_TIMEOUT=3 RACK_TIMEOUT_WAIT_OVERTIME=20 rails s
+Setting RACK_TIMEOUT_WAIT_OVERTIME=25 allows the payload to be fully received:
+
+    RACK_TIMEOUT_SERVICE_TIMEOUT=1 RACK_TIMEOUT_WAIT_TIMEOUT=3 RACK_TIMEOUT_WAIT_OVERTIME=25 rails s
 
     Payload size: 630000
     200
     Got it!
 
-    source=rack-timeout wait=18015ms timeout=1000ms service=60ms state=completed
+    source=rack-timeout wait=19982ms timeout=1000ms service=60ms state=completed
 
 ###### !! Remember to stop the network throttle !!
 
