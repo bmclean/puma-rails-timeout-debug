@@ -17,6 +17,7 @@ Response:
     Payload size: 630000
     200
     Got it!
+    Duration 0.02 seconds
 
 ##### Service timeout example:
 
@@ -33,6 +34,7 @@ As expected, this times out:
     Payload size: 630000
     500
     Internal Server Error
+    Duration 1.04 seconds
 
     Rack::Timeout::RequestTimeoutException (Request waited 15ms, then ran for longer than 1000ms )
 
@@ -49,6 +51,7 @@ As expected, this times out:
     Payload size: 630000
     500
     Internal Server Error
+    Duration 2.03 seconds
 
     Rack::Timeout::RequestTimeoutException (Request waited 21ms, then ran for longer than 1979ms )
 
@@ -76,6 +79,7 @@ This request (using the 3gslow throttle) exceeds 8 seconds, so we see:
     Payload size: 630000
     500
     Internal Server Error
+    Duration 19.31 seconds
 
     #<Rack::Timeout::RequestExpiryError: Request older than 8000ms.>
 
@@ -88,8 +92,9 @@ Setting RACK_TIMEOUT_WAIT_OVERTIME=25 allows the payload to be fully received:
     Payload size: 630000
     200
     Got it!
+    Duration 19.66 seconds
 
-    source=rack-timeout wait=19982ms timeout=1000ms service=60ms state=completed
+    source=rack-timeout wait=17811ms timeout=1000ms service=58ms state=completed
 
 ###### !! Remember to stop the network throttle !!
 
